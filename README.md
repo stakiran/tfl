@@ -1,6 +1,23 @@
 # tfl
 Listing resources of terraform files without state.
 
+# bra2
+
+```tf
+resource "..." "..." {
+  key = value
+  key = value
+}
+```
+
+この塊を wiki 化するのが良い気がしてきた。
+
+- ガチると tf language のパーサ書くことを意味する
+- 正規表現程度で頑張れないか
+- あー、でも array や list など expression が LL レベルだからダメか……
+
+# bra1
+
 ## Usage
 
 ```terminal
@@ -17,12 +34,6 @@ $ python tfl -d ./
 - (ResourceName)
 - ...
 ```
-
-***
-***
-***
-
-# design
 
 ## motivation
 - AWS 環境つくる terraform
