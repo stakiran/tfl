@@ -4,6 +4,19 @@ import glob
 import os
 import sys
 
+def parse_arguments():
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    parser.add_argument('-d', '--dir', default='./',
+        help='A target directory. If omitted then use the current dir.')
+
+    args = parser.parse_args()
+    return args
+
 def abort(msg):
     print('Error!: {0}'.format(msg))
     exit(1)
@@ -40,19 +53,6 @@ def get_tffiles_nestly(target_abs_path):
         newlines.append(file_relative)
 
     return newlines
-
-def parse_arguments():
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-
-    parser.add_argument('-d', '--dir', default='./',
-        help='A target directory. If omitted then use the current dir.')
-
-    args = parser.parse_args()
-    return args
 
 if __name__ == "__main__":
     args = parse_arguments()
