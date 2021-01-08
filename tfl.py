@@ -100,6 +100,25 @@ class TerraformFile:
     def filepath(self):
         return self._filepath
 
+class Merger:
+    def __init__(self, tffile_insts):
+        self._insts = tffile_insts
+
+        self._merge_resources()
+
+    def _merge_resources(self):
+        self._resources = {}
+
+        for inst in self._insts:
+            for type in inst.resources:
+                if not type in self._resources:
+                    self._resources[type] = []
+                self._resources[type].extend(inst.resources[type])
+
+    @property
+    def resources(self):
+        return self._resources
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -110,14 +129,14 @@ if __name__ == "__main__":
         inst = TerraformFile(tffile, lines)
         tffile_insts.append(inst)
 
+    merger = Merger(tffile_insts)
+
     outlines = []
-    for inst in tffile_insts:
-        outlines.append('# {}'.format(inst.filepath))
-        for type in inst.resources:
-            outlines.append('- {}'.format(type))
-            names = inst.resources[type]
-            for name in names:
-                outlines.append('    - {}'.format(name))
+    for type in merger.resources:
+        outlines.append('# {}'.format(type))
+        names = merger.resources[type]
+        for name in names:
+            outlines.append('- {}'.format(name))
         outlines.append('')
 
     for line in outlines:
