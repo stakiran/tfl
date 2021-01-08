@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+import glob
 import os
 import sys
 
@@ -27,6 +28,19 @@ def str2file(filepath, s):
     with open(filepath, encoding='utf8', mode='w') as f:
         f.write(s)
 
+def get_tffiles_nestly(target_abs_path):
+    query = '{}/**/*.tf'.format(target_abs_path)
+    files = glob.glob(query, recursive=True)
+
+    newlines = []
+    for file_abs in files:
+        file_relative = file_abs.replace(target_abs_path, '')
+        if file_relative[0] == '\\':
+            file_relative = file_relative[1:]
+        newlines.append(file_relative)
+
+    return newlines
+
 def parse_arguments():
     import argparse
 
@@ -34,7 +48,7 @@ def parse_arguments():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    parser.add_argument('-d', '--dir', default=None,
+    parser.add_argument('-d', '--dir', default='./',
         help='A target directory. If omitted then use the current dir.')
 
     args = parser.parse_args()
@@ -43,4 +57,6 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
 
-    print(args.dir)
+    tffiles = get_tffiles_nestly(args.dir)
+    for tffile in tffiles:
+        print(tffile)
