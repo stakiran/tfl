@@ -132,6 +132,16 @@ def output_normal(merger):
         outlines.append('')
     return outlines
 
+def output_target_format(merger):
+    outlines = []
+    for type in merger.resources:
+        names = merger.resources[type]
+        for name in names:
+            outline = '-target={}.{}'.format(type, name)
+            outlines.append(outline)
+    return outlines
+
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -144,7 +154,10 @@ if __name__ == "__main__":
 
     merger = Merger(tffile_insts)
 
-    outlines = output_normal(merger)
+    if args.use_target:
+        outlines = output_target_format(merger)
+    else:
+        outlines = output_normal(merger)
 
     for line in outlines:
         print(line)
