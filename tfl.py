@@ -15,6 +15,9 @@ def parse_arguments():
     parser.add_argument('-d', '--dir', default='./',
         help='A target directory. If omitted then use the current dir.')
 
+    parser.add_argument('--use-target', default=False, action='store_true',
+        help='If given then use output format `-target=resourcetype.name`.')
+
     args = parser.parse_args()
     return args
 
@@ -119,6 +122,16 @@ class Merger:
     def resources(self):
         return self._resources
 
+def output_normal(merger):
+    outlines = []
+    for type in merger.resources:
+        outlines.append('# {}'.format(type))
+        names = merger.resources[type]
+        for name in names:
+            outlines.append('- {}'.format(name))
+        outlines.append('')
+    return outlines
+
 if __name__ == "__main__":
     args = parse_arguments()
 
@@ -131,13 +144,7 @@ if __name__ == "__main__":
 
     merger = Merger(tffile_insts)
 
-    outlines = []
-    for type in merger.resources:
-        outlines.append('# {}'.format(type))
-        names = merger.resources[type]
-        for name in names:
-            outlines.append('- {}'.format(name))
-        outlines.append('')
+    outlines = output_normal(merger)
 
     for line in outlines:
         print(line)
