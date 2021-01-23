@@ -1,6 +1,13 @@
 # tfl
 Listing resources of terraform files without state.
 
+# テストコード
+テストデータ
+
+- example 持ってきて入れちゃったけど、テストデータは自分で定義した方がやりやすそう
+- 複数ファイルに複数リソースがあって、ファイル名昇順とファイル内上下順どおりに並ぶ前提でexpect書く
+- output() の中で print 使うと(i/o)すると再利用性低いので、もうちょい分割
+
 # bra2
 
 ```tf
