@@ -154,11 +154,13 @@ def output(tffile_insts, use_target):
 
 if __name__ == "__main__":
     args = parse_arguments()
+    basedir = args.dir
 
-    tffiles = get_tffiles_nestly(args.dir)
+    tffiles = get_tffiles_nestly(basedir)
     tffile_insts = []
     for i,tffile in enumerate(tffiles):
-        lines = file2list(tffile)
+        correct_path = os.path.join(basedir, tffile)
+        lines = file2list(correct_path)
         inst = TerraformFile(tffile, lines)
         tffile_insts.append(inst)
 
