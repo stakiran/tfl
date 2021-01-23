@@ -141,6 +141,16 @@ def output_target_format(merger):
             outlines.append(outline)
     return outlines
 
+def output(tffile_insts, use_target):
+    merger = Merger(tffile_insts)
+
+    if use_target:
+        outlines = output_target_format(merger)
+    else:
+        outlines = output_normal(merger)
+
+    for line in outlines:
+        print(line)
 
 if __name__ == "__main__":
     args = parse_arguments()
@@ -152,12 +162,4 @@ if __name__ == "__main__":
         inst = TerraformFile(tffile, lines)
         tffile_insts.append(inst)
 
-    merger = Merger(tffile_insts)
-
-    if args.use_target:
-        outlines = output_target_format(merger)
-    else:
-        outlines = output_normal(merger)
-
-    for line in outlines:
-        print(line)
+    output(tffile_insts, args.use_target)
